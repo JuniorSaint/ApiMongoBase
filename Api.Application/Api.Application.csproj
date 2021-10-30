@@ -27,5 +27,7 @@
     <ProjectReference Include="..\Api.CrossCutting\Api.CrossCutting.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Api.Domain\Api.Domain.csproj" />
+    <ProjectReference Include="..\Api.Service\Api.Service.csproj" />
   </ItemGroup>
 </Project>

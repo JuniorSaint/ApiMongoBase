@@ -28,13 +28,12 @@ namespace Api.Data.Implementations
         {
             try
             {
-                var result = await _mongo.FindAsync(u => u.Email.Equals(login.Email) &&
-                          u.IsActive.Equals("yes"));
+                var result = await _mongo.Find(u => u.Email.Equals(login.Email) &&
+                          u.IsActive.Equals("yes")).FirstOrDefaultAsync();
 
                 if (result == null) return null;
 
-                //var validResult = await ValidUpdatePassword(login, result.Password);
-                var validResult = true;
+                var validResult = ValidUpdatePassword(login, result.Password);
                 return (UserEntity)(validResult ? result : null);
 
             }
@@ -45,7 +44,7 @@ namespace Api.Data.Implementations
         }
 
         // to valid the password cripytography
-        private async Task<bool> ValidUpdatePassword(LoginDto login, string resultPassword)
+        private bool ValidUpdatePassword(LoginDto login, string resultPassword)
         {
             var passwordHasher = new PasswordHasher<LoginDto>();
             var status = passwordHasher.VerifyHashedPassword(login, resultPassword, login.Password);
@@ -53,8 +52,7 @@ namespace Api.Data.Implementations
             {
                 case PasswordVerificationResult.Failed: return false;
                 case PasswordVerificationResult.Success: return true;
-                case PasswordVerificationResult.SuccessRehashNeeded:
-                    await UpdatePasswordAsync(login); return true;
+                case PasswordVerificationResult.SuccessRehashNeeded: return true;
                 default: throw new InvalidOperationException();
             }
         }
@@ -98,17 +96,17 @@ namespace Api.Data.Implementations
             }
         }
 
-        public async Task<bool> UpdatePasswordAsync(LoginDto password)
+        public async Task<bool> UpdatePasswordAsync(UserPasswordUpdateDto password)
         {
             try
             {
                 var result = await _mongo.Find(p => p.Email.Equals(password.Email)).FirstOrDefaultAsync();
                 if (result == null) return false;
+                var update = Builders<UserEntity>.Update.Set(_ => _.Password, password.Password)
+                                                        .Set(_ => _.UpdatedAt, DateTime.UtcNow)
+                                                        .Set(_ => _.CreatedAt, result.CreatedAt);
 
-                password.UpdatedAt = DateTime.UtcNow;
-                password.CreatedAt = result.CreatedAt;
-
-                //await _mongo.UpdateOneAsync(result, );
+                var finalResult = await _mongo.UpdateOneAsync(_ => _.Email == password.Email, update);
             }
 
             catch (Exception)
@@ -117,6 +115,8 @@ namespace Api.Data.Implementations
             }
             return true;
         }
+
+
 
     }
 }

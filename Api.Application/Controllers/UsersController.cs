@@ -129,5 +129,27 @@ namespace Api.Application.Controllers
                 return StatusCode((int)System.Net.HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpPatch("password")]
+        public async Task<ActionResult> PatchPassword([FromBody] UserPasswordUpdateDto user)
+        {
+            try
+            {
+                var result = await _service.PatchPassword(user);
+                if (result != false)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest("Dados não foram atualizados");
+                }
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
     }
 }
+

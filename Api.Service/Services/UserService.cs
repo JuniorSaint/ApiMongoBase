@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Api.Domain.Dtos.Login;
 using Api.Domain.Dtos.User;
 using Api.Domain.Entities;
 using Api.Domain.Interfaces;
@@ -67,6 +68,19 @@ namespace Api.Service.Services
 
             var result = await _repository.UpdateAsync(entity);
             return _mapper.Map<UserUpdateResultDto>(result);
+        }
+
+        public async Task<bool> PatchPassword(UserPasswordUpdateDto user)
+        {
+            var passwordHasher = new PasswordHasher<UserPasswordUpdateDto>();
+            user.Password = passwordHasher.HashPassword(user, user.Password);
+            return await _repository.UpdatePasswordAsync(user);
+
+            //var model = _mapper.Map<UserModel>(user);
+            //var entity = _mapper.Map<UserEntity>(model);
+
+            //var result = await _repository.UpdatePasswordAsync(user);
+            //return _mapper.Map<UserUpdateResultDto>(result);
         }
     }
 }

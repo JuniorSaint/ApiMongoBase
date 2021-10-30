@@ -17,6 +17,6 @@ namespace Api.Domain.Interfaces.Repositories
 
         Task<IEnumerable<UserEntity>> SearchByNameAsync(string name);
 
-        Task<bool> UpdatePasswordAsync(LoginDto password); // Altera somente a senha
+        Task<bool> UpdatePasswordAsync(UserPasswordUpdateDto password); // Altera somente a senha
     }
 }

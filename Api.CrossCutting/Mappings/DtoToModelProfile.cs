@@ -14,6 +14,7 @@ namespace Api.CrossCutting.Mappings
             CreateMap<UserModel, UserCreateDto>().ReverseMap();
             CreateMap<UserModel, UserUpdateDto>().ReverseMap();
             CreateMap<UserModel, UserUpdateResultDto>().ReverseMap();
+            CreateMap<UserModel, UserPasswordUpdateDto>().ReverseMap();
             #endregion
 
         }

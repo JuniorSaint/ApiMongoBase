@@ -5,6 +5,8 @@ namespace Api.Domain.Dtos.Login
 {
     public class LoginDto
     {
+        public Guid? Id { get; set; }
+
         [Display(Name = "e-mail"),
          Required(ErrorMessage = "O campo {0} é obrigatório para Login"),
          EmailAddress(ErrorMessage = "campo {0} em formato inválido.")]
