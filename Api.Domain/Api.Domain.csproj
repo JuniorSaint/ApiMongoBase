@@ -17,17 +17,19 @@
     <None Remove="Dto\Login\" />
     <None Remove="System.IdentityModel.Tokens.Jwt" />
     <None Remove="Security\" />
+    <None Remove="Dtos\Email\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Dto\" />
-    <Folder Include="Dto\User\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="Dtos\User\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Interfaces\Repositories\" />
     <Folder Include="Interfaces\Services\" />
     <Folder Include="Entities\" />
-    <Folder Include="Dto\Login\" />
+    <Folder Include="Dtos\Login\" />
     <Folder Include="Security\" />
+    <Folder Include="Dtos\Email\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.13.2" />

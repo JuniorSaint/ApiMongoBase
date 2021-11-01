@@ -15,6 +15,7 @@ namespace Api.Domain.Interfaces.Services
         Task<bool> Delete(Guid id);
         Task<UserDto> Get(Guid id);
         Task<IEnumerable<UserDto>> GetAll();
-        Task<IEnumerable<UserDto>> GetAllPage(int skip, int take);
+        Task<IEnumerable<UserDto>> GetAllWithPagination(int skip, int take);
+        Task<IEnumerable<UserDto>> GetByNamesAsync(string name);
     }
 }

@@ -33,13 +33,27 @@ namespace Api.Application.Controllers
             }
         }
 
+        // [Authorize("Bearer")]
+        [HttpGet("username/{name}")]
+        public async Task<ActionResult> GetAll([FromRoute] string name)
+        {
+            try
+            {
+                return Ok(await _service.GetByNamesAsync(name));
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
         [HttpGet]
         [Route("{skip}/{take}")]
         public async Task<ActionResult> GetAllPage([FromRoute] int skip, [FromRoute] int take)
         {
             try
             {
-                return Ok(await _service.GetAllPage(skip, take));
+                return Ok(await _service.GetAllWithPagination(skip, take));
             }
             catch (Exception e)
             {
@@ -49,7 +63,7 @@ namespace Api.Application.Controllers
 
         // [Authorize("Bearer")]
         [HttpGet]
-        [Route(template: "{id:guid}", Name = "GetWithId")]
+        [Route(template: "{id}", Name = "GetWithId")]
         public async Task<ActionResult> Get([FromRoute] Guid id)
         {
             try
@@ -150,6 +164,8 @@ namespace Api.Application.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
+
+
     }
 }
 

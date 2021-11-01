@@ -55,6 +55,7 @@ namespace Api.Application
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ILoginService, LoginService>();
+            services.AddTransient<ISendEmailSerivce, SendEmailService>();
 
             // adiciona as configurações do crosscutting
             //ConfigureService.ConfigureDependenciesService(services);

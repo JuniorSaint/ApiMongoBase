@@ -61,34 +61,7 @@ namespace Api.Data.Implementations
         {
             try
             {
-                return await _mongo.Find(u => u.Email.Equals(email)).FirstOrDefaultAsync();
-            }
-            catch (ArgumentException)
-            {
-                throw;
-            }
-        }
-
-        public async Task<IEnumerable<UserEntity>> SearchByEmailAsync(string email)
-        {
-            try
-            {
-                var result = await _mongo.Find(x => x.Email.ToLower().Contains(email.ToLower())).ToListAsync();
-                return result;
-
-            }
-            catch (ArgumentException)
-            {
-                throw;
-            }
-        }
-
-        public async Task<IEnumerable<UserEntity>> SearchByNameAsync(string name)
-        {
-            try
-            {
-                var result = await _mongo.Find(x => x.UserName.ToLower().Contains(name.ToLower())).ToListAsync();
-                return result;
+                return await _mongo.Find(u => u.Email.ToLower().Equals(email.ToLower())).FirstOrDefaultAsync();
             }
             catch (ArgumentException)
             {
@@ -116,7 +89,43 @@ namespace Api.Data.Implementations
             return true;
         }
 
+        public async Task<IEnumerable<UserEntity>> GetByNamesAsync(string Name)
+        {
+            try
+            {
+                var result = await _mongo.Find(x => x.UserName.ToLower().Contains(Name.ToLower())).ToListAsync();
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
 
+        }
+
+
+
+        //private FilterDefinition<UserEntity> GetFilter(UserDto userFilter)
+        //{
+        //    FilterDefinition<UserEntity> filter = FilterDefinition<UserEntity>.Empty;
+
+        //    if (!string.IsNullOrEmpty(userFilter.Email))
+        //    {
+        //        filter = Builders<UserEntity>.Filter.Regex("Email", new MongoDB.Bson.BsonRegularExpression(userFilter.Email));
+        //    }
+
+        //    if (!string.IsNullOrEmpty(userFilter.UserName))
+        //    {
+        //        filter = Builders<UserEntity>.Filter.Regex("UserName", new MongoDB.Bson.BsonRegularExpression(userFilter.UserName));
+        //    }
+
+        //    if (!string.IsNullOrEmpty(userFilter.IsActive))
+        //    {
+        //        filter = Builders<UserEntity>.Filter.Regex("IsActive", new MongoDB.Bson.BsonRegularExpression(userFilter.IsActive));
+        //    }
+
+        //    return filter;
+        //}
     }
 }

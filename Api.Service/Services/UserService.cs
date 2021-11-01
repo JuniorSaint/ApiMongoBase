@@ -31,19 +31,20 @@ namespace Api.Service.Services
 
         public async Task<UserDto> Get(Guid id)
         {
-            var entity = await _repository.SelectAsync(id);
+            var entity = await _repository.SelectbyIdtAsync(id);
             return _mapper.Map<UserDto>(entity);
         }
 
         public async Task<IEnumerable<UserDto>> GetAll()
         {
-            var list = await _repository.SelectAsync();
+            var list = await _repository.SelectAllAsync();
             return _mapper.Map<IEnumerable<UserDto>>(list);
         }
 
-        public Task<IEnumerable<UserDto>> GetAllPage(int skip, int take)
+        public async Task<IEnumerable<UserDto>> GetAllWithPagination(int skip, int take)
         {
-            throw new NotImplementedException();
+            var list = await _repository.SelectAllWithPaginationAsync(skip, take);
+            return _mapper.Map<IEnumerable<UserDto>>(list);
         }
 
         public async Task<UserDto> Post(UserCreateDto user)
@@ -75,12 +76,12 @@ namespace Api.Service.Services
             var passwordHasher = new PasswordHasher<UserPasswordUpdateDto>();
             user.Password = passwordHasher.HashPassword(user, user.Password);
             return await _repository.UpdatePasswordAsync(user);
+        }
 
-            //var model = _mapper.Map<UserModel>(user);
-            //var entity = _mapper.Map<UserEntity>(model);
-
-            //var result = await _repository.UpdatePasswordAsync(user);
-            //return _mapper.Map<UserUpdateResultDto>(result);
+        public async Task<IEnumerable<UserDto>> GetByNamesAsync(string name)
+        {
+            var list = await _repository.GetByNamesAsync(name);
+            return _mapper.Map<IEnumerable<UserDto>>(list);
         }
     }
 }

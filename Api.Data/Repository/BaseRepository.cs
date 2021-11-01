@@ -63,19 +63,21 @@ namespace Api.CrossCutting.Repository
             return item;
         }
 
-        //public async Task<IEnumerable<T>> SelectAllPageAsync(int skip, int take)
-        //{
-        //    try
-        //    {
-        //        return (IEnumerable<T>)await _mongo.FindAsync(x => true)
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
+        public async Task<IEnumerable<T>> SelectAllWithPaginationAsync(int skip, int take)
+        {
+            try
+            {
+                var result = await _mongo.Find(x => true).SortBy(x => x.CreatedAt).Skip(skip > 0 ? ((skip - 1) * take) : 0).Limit(take).ToListAsync();
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-        public async Task<T> SelectAsync(Guid id)
+
+        public async Task<T> SelectbyIdtAsync(Guid id)
         {
             try
             {
@@ -87,7 +89,7 @@ namespace Api.CrossCutting.Repository
             }
         }
 
-        public async Task<IEnumerable<T>> SelectAsync()
+        public async Task<IEnumerable<T>> SelectAllAsync()
         {
             try
             {

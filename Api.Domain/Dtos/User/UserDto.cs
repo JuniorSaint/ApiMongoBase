@@ -1,4 +1,6 @@
 ﻿using System;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace Api.Domain.Dtos.User
 {
     public class UserDto
