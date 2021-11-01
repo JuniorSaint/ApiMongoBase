@@ -12,7 +12,7 @@ namespace Api.Service.Services
     public class SendEmailService : ISendEmailSerivce
     {
 
-        EmailConfiguration emailConfiguration = new EmailConfiguration();
+        EmailConfiguration emailConfiguration = new();
 
 
         public async Task SendMail(SendEmailDto sendEmail)
